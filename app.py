@@ -69,7 +69,6 @@ def fmt_money(x):
     except Exception:
         return x
 
-
 # custo médio ponderado até a data (inclusive)
 def get_avg_cost_until(sku: str, until_iso: str) -> float | None:
     with get_conn() as conn:
@@ -79,13 +78,14 @@ def get_avg_cost_until(sku: str, until_iso: str) -> float | None:
             SELECT SUM(unit_cost * quantity) * 1.0 / NULLIF(SUM(quantity), 0)
             FROM purchases
             WHERE sku = ? AND date <= ?
-            """",
+            """,
             (sku, until_iso),
         )
         row = cur.fetchone()
         if row and row[0] is not None:
             return float(row[0])
         return None
+
 
 
 # -------------- UI -----------------
